@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "power-sensor-monitor.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "power-sensor-monitor.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    {{- include "power-sensor-monitor.selectorLabels" . | nindent 4 }}
