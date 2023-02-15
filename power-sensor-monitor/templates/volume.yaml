@@ -3,8 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
     name: {{ include "power-sensor-monitor.fullname" . }}
     namespace: {{ .Release.Namespace }}
-    labels:
-      {{- include "power-sensor-monitor.labels" . | nindent 4 }}
 spec:
     accessModes:
         - ReadWriteOnce
