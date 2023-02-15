@@ -29,11 +29,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /webhook/version/
               port: althttp
           readinessProbe:
             httpGet:
-              path: /
+              path: /webhook/version/
               port: althttp
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
