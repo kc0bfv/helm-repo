@@ -26,6 +26,7 @@ jobs:
           path: . # default is _site/
           
   deploy:
+    needs: build
     permissions:
         pages: write
         id-token: write
