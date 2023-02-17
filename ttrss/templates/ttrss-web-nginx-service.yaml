@@ -1,3 +1,4 @@
+{{- $fullName := include "ttrss.fullname" . -}}
 apiVersion: v1
 kind: Service
 metadata:
