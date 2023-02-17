@@ -27,7 +27,7 @@ ingress:
     #cert-manager.io/cluster-issuer: letsencrypt
     #traefik.ingress.kubernetes.io/router.middlewares: ttrss-ttrss-auth@kubernetescrd
   tls: []
-  #  - secretName: chart-example-tls
+  #  secretName: chart-example-tls
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
