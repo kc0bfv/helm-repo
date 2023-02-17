@@ -39,14 +39,14 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /tt-rss/
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /tt-rss/
-              port: http
+          #livenessProbe:
+          #  httpGet:
+          #    path: /tt-rss/
+          #    port: http
+          #readinessProbe:
+          #  httpGet:
+          #    path: /tt-rss/
+          #    port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:

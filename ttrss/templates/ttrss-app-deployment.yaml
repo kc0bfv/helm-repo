@@ -53,14 +53,14 @@ spec:
                 secretKeyRef:
                     name: ttrss-database
                     key: password
-          livenessProbe:
-            httpGet:
-              path: /
-              port: apphttp
-          readinessProbe:
-            httpGet:
-              path: /
-              port: apphttp
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: apphttp
+          #readinessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: apphttp
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
