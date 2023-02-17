@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                     name: ttrss-database
                     key: password
+            - name: ADMIN_USER_PASS
+              valueFrom:
+                secretKeyRef:
+                    name: ttrss-database
+                    key: admin-pass
           #livenessProbe:
           #  httpGet:
           #    path: /
