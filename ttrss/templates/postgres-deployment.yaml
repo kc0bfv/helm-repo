@@ -31,6 +31,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: postgres:12-alpine
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: database
           ports:
             - name: postgres
               containerPort: 5432
