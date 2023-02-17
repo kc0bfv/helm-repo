@@ -8,8 +8,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: apphttp
-      targetPort: apphttp
+    - port: 9000
+      targetPort: 9000
       protocol: TCP
       name: apphttp
   selector:

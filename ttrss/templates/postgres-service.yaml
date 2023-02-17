@@ -8,8 +8,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: postgres
-      targetPort: postgres
+    #- port: postgres
+    #  targetPort: postgres
+    #  protocol: TCP
+    #  name: postgres
+    - port: 5432
+      targetPort: 5432
       protocol: TCP
       name: postgres
   selector:
