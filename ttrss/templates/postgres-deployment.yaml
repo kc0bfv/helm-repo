@@ -57,10 +57,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-        - name: app
+        - name: database
           persistentVolumeClaim:
-            claimName: app
-            readOnly: true
+            claimName: database
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
