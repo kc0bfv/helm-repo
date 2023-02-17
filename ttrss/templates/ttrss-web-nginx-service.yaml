@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ttrss-service
+  name: {{ $fullName }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "ttrss.labels" . | nindent 4 }}
