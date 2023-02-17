@@ -1,0 +1,68 @@
+{{- $appName := "ttrss-web-nginx" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ttrss.labels" . | nindent 4 }}
+    app: {{ $appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "ttrss.selectorLabels" . | nindent 6 }}
+      app: {{ $appName }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ttrss.selectorLabels" . | nindent 8 }}
+        app: {{ $appName }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $appName }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: cthulhoo/ttrss-web-nginx
+          volumeMounts:
+            - mountPath: "/var/www/html"
+              name: app
+              readOnly: true
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /tt-rss/
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /tt-rss/
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: app
+            readOnly: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

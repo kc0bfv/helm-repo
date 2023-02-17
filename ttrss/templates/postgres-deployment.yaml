@@ -1,0 +1,75 @@
+{{- $appName := "db" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $appName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ttrss.labels" . | nindent 4 }}
+    app: {{ $appName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "ttrss.selectorLabels" . | nindent 6 }}
+      app: {{ $appName }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ttrss.selectorLabels" . | nindent 8 }}
+        app: {{ $appName }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $appName }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: postgres:12-alpine
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.database.username }}
+            - name: POSTGRES_DB
+              value: {{ .Values.database.database }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    name: ttrss-database
+                    key: password
+          startupProbe:
+            exec:
+              command: ["/bin/sh", "-c", "exec", "pg_isready", "-U", {{ default "postgres" .Values.database.username }}, "-d", "dbname={{ .Values.database.database }}", "-h", "127.0.0.1", "-p", "5432"]
+          livenessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "exec", "pg_isready", "-U", {{ default "postgres" .Values.database.username }}, "-d", "dbname={{ .Values.database.database }}", "-h", "127.0.0.1", "-p", "5432"]
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "exec", "pg_isready", "-U", {{ default "postgres" .Values.database.username }}, "-d", "dbname={{ .Values.database.database }}", "-h", "127.0.0.1", "-p", "5432"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: app
+            readOnly: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

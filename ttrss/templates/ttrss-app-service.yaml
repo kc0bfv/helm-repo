@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ttrss.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: apphttp
+      targetPort: apphttp
+      protocol: TCP
+      name: apphttp
+  selector:
+    app: app
+  clusterIP: None
