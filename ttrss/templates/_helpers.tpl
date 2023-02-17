@@ -49,3 +49,27 @@ Selector labels
 app.kubernetes.io/name: {{ include "ttrss.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/* fpm-pgsql env */}}
+{{- define "ttrss.fpm-pgsql-env" -}}
+- name: TTRSS_SELF_URL_PATH
+  {{- if .Values.ingress.tls }}
+  value: "https://{{ .Values.host }}/tt-rss/"
+  {{- else }}
+  value: "http://{{ .Values.host }}/tt-rss/"
+  {{- end }}
+- name: TTRSS_DB_USER
+  value: {{ .Values.database.username }}
+- name: TTRSS_DB_NAME
+  value: {{ .Values.database.database }}
+- name: TTRSS_DB_PASS
+  valueFrom:
+    secretKeyRef:
+        name: ttrss-database
+        key: password
+- name: ADMIN_USER_PASS
+  valueFrom:
+    secretKeyRef:
+        name: ttrss-database
+        key: admin-pass
+{{- end }}

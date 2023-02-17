@@ -39,17 +39,7 @@ spec:
               name: config
               readOnly: true
           env:
-            - name: TTRSS_SELF_URL_PATH
-              value: "http://{{ .Values.host }}/tt-rss/"
-            - name: TTRSS_DB_USER
-              value: {{ .Values.database.username }}
-            - name: TTRSS_DB_NAME
-              value: {{ .Values.database.database }}
-            - name: TTRSS_DB_PASS
-              valueFrom:
-                secretKeyRef:
-                    name: ttrss-database
-                    key: password
+            {{- include "ttrss.fpm-pgsql-env" . | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
