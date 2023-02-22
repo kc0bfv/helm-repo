@@ -23,6 +23,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "kc0bfv/power_sensor_monitor"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMount:
+            - mountPath: "/opt/webhook_data"
+              name: {{ include "power-sensor-monitor.fullname" . }}
           ports:
             - name: althttp
               containerPort: 8080
