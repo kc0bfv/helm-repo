@@ -98,6 +98,10 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ include "funkwhale.fullname" . }}
+          {{- with .Values.separateSecretName }}
+          - secretRef:
+              name: {{ . | quote }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 80

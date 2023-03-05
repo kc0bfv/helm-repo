@@ -43,6 +43,10 @@ spec:
               name: {{ include "funkwhale.fullname" . }}
           - secretRef:
               name: {{ include "funkwhale.fullname" . }}
+          {{- with .Values.separateSecretName }}
+          - secretRef:
+              name: {{ . | quote }}
+          {{- end }}
           volumeMounts:
             - mountPath: /srv/funkwhale/data
               name: data
