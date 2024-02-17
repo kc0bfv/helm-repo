@@ -53,7 +53,7 @@ spec:
             - name: RESOLVER
               value: kube-dns.kube-system.svc.cluster.local
             - name: APP_UPSTREAM
-              value: {{ include "ttrss.fullname" . }}-app.{{ .Release.Namespace }}.svc.cluster.local
+              value: app.{{ .Release.Namespace }}.svc.cluster.local
       volumes:
         - name: app
           persistentVolumeClaim:
