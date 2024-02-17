@@ -49,6 +49,11 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: RESOLVER
+              value: kube-dns.kube-system.svc.cluster.local
+            - name: APP_UPSTREAM
+              value: {{ include "common.fullname" . }}-app.{{ .Release.Namespace }}.svc.cluster.local
       volumes:
         - name: app
           persistentVolumeClaim:
