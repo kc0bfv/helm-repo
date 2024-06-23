@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "power-sensor-monitor.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "power-sensor-monitor.fullname" . }}:{{ .Values.service.port }}/webhook/version/']
   restartPolicy: Never
