@@ -56,8 +56,8 @@ Create chart name and version as used by the chart label.
 {{/*
 Create the correct image tag name
 */}}
-{{- define "funkwhale.imageTag" -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- define "funkwhale.imageUri" -}}
+{{- printf "%s/%s:%s" (.Scope.registry | default .Values.image.registry | default "docker.io/funkwhale") (.Scope.image | default .Values.image.image) (.Scope.tag | default .Values.tag | default .Chart.AppVersion) -}}
 {{- end -}}
 
 {{- define "funkwhale.redis.host" -}}
@@ -71,7 +71,7 @@ Create the correct image tag name
 {{- else if .Values.redis.enabled -}}
 redis://:{{ .Values.redis.auth.password }}@{{ template "funkwhale.redis.host" . }}:{{ .Values.redis.master.service.port | default 6379 }}/0
 {{- else if .Values.redis.host -}}
-redis://:{{ .Values.redis.auth.password }}@{{ .Values.redis.host }}:{{ .Values.redis.master.service.port | default 6379 }}/0
+redis://:{{ .Values.redis.auth.password }}@{{ .Values.redis.host }}:{{ .Values.redis.master.service.port | default 6379 }}/{{ .Values.redis.database | default 0 }}
 {{- else -}}
 {{ fail "Either redis.enabled or redis.host are required!" }}
 {{- end -}}
