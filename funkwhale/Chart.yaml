@@ -6,7 +6,7 @@ icon: https://funkwhale.audio/favicon.png
 appVersion: "1.4.0"
 
 type: application
-version: 1.1.0-alpha
+version: 1.1.0
 dependencies:
   - name: postgresql
     version: ^12.1.4
