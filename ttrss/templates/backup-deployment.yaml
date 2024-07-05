@@ -29,7 +29,7 @@ spec:
         - name: {{ $appName }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: cthulhoo/ttrss-fpm-pgsql-static
+          image: {{ include "ttrss.fpm-pgsql-image" . }}
           command: ["/opt/tt-rss/dcron.sh", "-f"]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:

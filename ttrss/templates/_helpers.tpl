@@ -73,3 +73,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
         name: ttrss-database
         key: admin-pass
 {{- end }}
+
+
+{{/*
+Define image tags from AppVersion
+*/}}
+{{- define "ttrss.fpm-pgsql-image" -}}
+{{- printf "cthulhoo/ttrss-fpm-pgsql-static:%s" .Chart.AppVersion -}}
+{{- end -}}
+{{- define "ttrss.web-nginx-image" -}}
+{{- printf "cthulhoo/ttrss-web-nginx:%s" .Chart.AppVersion -}}
+{{- end -}}
